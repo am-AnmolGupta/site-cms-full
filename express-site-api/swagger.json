@@ -1,0 +1,696 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0",
+        "title": "EXPRESS DRIVE"
+    },
+    "host": "petstore.swagger.io",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Admin Api",
+            "description": ""
+        },
+        {
+            "name": "Frontend Api",
+            "description": "Frontend Api"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/admin/add-user": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add User",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "roles",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "array",
+                        "format": "['admin']",
+                        "default": ""
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get user List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "users list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add-role": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add Role",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "role added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/roles": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get role List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "role list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add/brand": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add Brand",                
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "logo",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "file",
+                        "format": "binary"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_title",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_image",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/brands": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get brand List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "brand list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add/model": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add Brand",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "logo",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_title",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_image",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/models": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get model List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "model list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add/variant": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add Variant",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "logo",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_title",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_image",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/variants": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get variants List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Variants list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add/attribute": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add Attribute",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "logo",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_title",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_image",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Attribute added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/attributes": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get attribute List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "attribute list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/add/specification": {
+            "post": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Add specification",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "logo",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_title",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_description",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": ""
+                    },
+                    {
+                        "name": "seo_image",
+                        "in": "formData",
+                        "description": "reqData",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "specification added successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/specifications": {
+            "get": {
+                "tags": [
+                    "Admin Api"
+                ],
+                "summary": "Get specification List",
+                "description": "",
+                "operationId": "Api",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "specification list",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Authorization": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "  Enter the token like `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmQxODM1NzQ0MGZmYjUzMWM5NDE0NCIsImZpcnN0TmFtZSI6Ik1vaGQiLCJtb2JpbGUiOiI5NjkwNzE2MzA5IiwiZGV2aWNlVG9rZW4iOiIxMjM0NTY3OCIsIm5vdGlmaWNhdGlvblN0YXR1cyI6dHJ1ZSwiaWF0IjoxNjczODkxNTk4LCJleHAiOjE3MDU0Mjc1OTh9.uN4d3gbKmDkeBv0fjE94i2Ffwcfwe7ty1ySEnuFrh28` "
+        }
+    },
+    "definitions": {
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

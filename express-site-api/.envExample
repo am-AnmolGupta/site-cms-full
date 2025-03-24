@@ -1,0 +1,30 @@
+NODE_ENV=production
+PORT = 4000
+APP_ENVIRONMENT=live
+MONGO_URI = mongodb://localhost:27017/express-drive
+ACCESS_TOKEN_SECRET=811889b2ad065c20f2405a5d6dcb1c73d2422b06ff0db03de9a1d667f785a565792bf116fa5b2d80da8793e312f4ba9fd23dbd9137867f3a132aadb1594c0899
+REFRESH_TOKEN_SECRET=d627a36a9cbe8720e29cf8717bcb430756a0628971377d42d1db89a688c815c65d42cd31e93571735afac406af9ff969ae8b0ad23da30cc61921354bbdb1bcb6
+
+BASE_URL=http://localhost:4000
+FRONTEND_URL=http://localhost:3000
+ADMIN_URL=http://localhost:3000
+
+FILE_UPLOAD_PATH= ./public/files
+MAX_FILE_UPLOAD=1000000
+# IMAGE_URL=http://localhost:4000/files/
+IMAGE_URL=https://virtualevent-fe.s3.ap-south-1.amazonaws.com/express-products/auto/images/
+S3_IMAGE_URL=virtualevent-fe.s3.ap-south-1.amazonaws.com/
+APP_DEBUG=true
+CACHE_DRIVER=file
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=
+AWS_BUCKET=
+AWS_BASE_FOLDER=
+
+DB_COMMODITY_USER=postgres
+DB_COMMODITY_HOST=localhost
+DB_COMMODITY_NAME=stock_fe
+DB_COMMODITY_PASSWORD=admin
+DB_COMMODITY_PORT=5432
