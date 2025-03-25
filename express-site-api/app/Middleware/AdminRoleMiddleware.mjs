@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken';
 import { failed } from '../Helper/response.mjs';
 
-export const SuperAdminRoleMiddleware = (req, res, next) => {
+export const AdminRoleMiddleware = (req, res, next) => {
     try {
         if (req.headers['authorization']) {
             const token = req.body.token || req.query.token || req.headers['authorization'].split(' ')[1];

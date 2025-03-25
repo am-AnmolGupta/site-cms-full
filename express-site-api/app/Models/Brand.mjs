@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Model } from "./Model.mjs";
+// import { Model } from "./Model.mjs";
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const BrandSchema = mongoose.Schema({
@@ -14,11 +14,6 @@ const BrandSchema = mongoose.Schema({
     logo: {
         type: String,
         required: false
-    },
-    rank: {
-        type: Number,
-        required: false,
-        default: 0
     },
     discontinued_model: {
         type: Boolean,

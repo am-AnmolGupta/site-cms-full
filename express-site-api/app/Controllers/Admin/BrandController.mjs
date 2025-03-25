@@ -45,11 +45,10 @@ export class BrandController extends Error {
                 return success(res, "Brand updated successfully!");
             } else {
                 try {
-                    const currentYear = new Date().getFullYear();
                     req.body.logo = req.files && req.files.logo ? fileUpload(req.files.logo, `${moduleType}-${req.body.slug}-logo`) : '';
-                    req.body.seo_title = `${req.body.name} Cars ${currentYear}: ${req.body.name} New Cars, ${currentYear} ${req.body.name} Car Price in India, Images, Reviews`;
-                    req.body.seo_description = `${req.body.name} Car Price ${currentYear}: Check ${req.body.name} new cars ${currentYear} price in India, new ${req.body.name} car launch date, ${req.body.name} car reviews on financialexpress.com. Planning to buy a ${req.body.name} car? check ${req.body.name} cars features, specifications, engine, mileage, interior and exterior images, reviews and more.`;
-                    req.body.seo_keywords = `${req.body.name} cars, new ${req.body.name} cars, ${req.body.name} cars ${currentYear}, ${req.body.name} car price in india, ${req.body.name} electric car, ${req.body.name} cng car, ${req.body.name} suv car, ${req.body.name} hatchback car, ${req.body.name} cars reviews, ${req.body.name} cars new launches, ${req.body.name} sedan cars, ${req.body.name} car features, ${req.body.name} cars specifications`;
+                    req.body.seo_title = `${req.body.name} Cars 2024: ${req.body.name} New Cars, 2024 ${req.body.name} Car Price in India, Images, Reviews`;
+                    req.body.seo_description = `${req.body.name} Car Price 2024: Check ${req.body.name} new cars 2024 price in India, new ${req.body.name} car launch date, ${req.body.name} car reviews on financialexpress.com. Planning to buy a ${req.body.name} car? check ${req.body.name} cars features, specifications, engine, mileage, interior and exterior images, reviews and more.`
+                    req.body.seo_keywords = `${req.body.name} cars, new ${req.body.name} cars, ${req.body.name} cars 2024, ${req.body.name} car price in india, ${req.body.name} electric car, ${req.body.name} cng car, ${req.body.name} suv car, ${req.body.name} hatchback car, ${req.body.name} cars reviews, ${req.body.name} cars new launches, ${req.body.name} sedan cars, ${req.body.name} car features, ${req.body.name} cars specifications`;
                     req.body.seo_image = req.files && req.files.seo_image ? fileUpload(req.files.seo_image, `${moduleType}-${req.body.slug}-seo_image`) : '';
                     req.body.deletedAt = req.body.status ? ((req.body.status === 'inactive') ? new Date() : null) : null;
                 } catch (fileError) {

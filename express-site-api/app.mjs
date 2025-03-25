@@ -17,11 +17,7 @@ import { connectDB } from './config/db.mjs';
 import { queryLogger } from './app/Helper/queryLogger.mjs';
 import { accessLogger } from './app/Helper/logger.mjs'; // Import accessLogger
 import { deleteCacheFiles } from "./app/Helper/util.mjs";
-import { dbCommoditiesConnect } from './config/db_commodities.mjs';
-import { commodityAdminRouter } from './routes/commodity_admin.mjs';
-import cron from "node-cron";
-import { Worker } from 'worker_threads';
-import { updateSeoMeta } from './app/Helper/commoditySeoMetaHelper.mjs';
+
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -104,7 +100,6 @@ if (process.env.APP_DEBUG === 'true') {
 // Set up routes
 app.use('/admin', adminRouter);
 app.use('/api', apiRouter);
-app.use('/commodity-admin', commodityAdminRouter);
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -133,80 +128,8 @@ process.on('unhandledRejection', (reason, promise) => {
 function startServer() {
   app.listen(PORT, () => {
     connectDB();
-    dbCommoditiesConnect();
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
 // Start the server initially
 startServer();
-
-// Function to create and run a worker
-function runSyncWorker() {
-  return new Promise((resolve, reject) => {
-    const startTime = new Date();
-    logger.info(`Cron job started at: ${startTime.toISOString()}`);
-
-    const workerPath = path.join(__dirname, 'app', 'Workers', 'syncCommoditiesTopContentWorker.mjs');
-    const worker = new Worker(workerPath);
-
-    worker.on('message', (message) => {
-      const endTime = new Date();
-      const executionTime = (endTime - startTime) / 1000;
-
-      if (message.error) {
-        logger.error(`Cron job failed at: ${endTime.toISOString()} (Execution Time: ${executionTime} seconds)`, message.error);
-        reject(message.error);
-      } else {
-        logger.info(`Cron job completed at: ${endTime.toISOString()} (Execution Time: ${executionTime} seconds)`);
-        resolve(message);
-      }
-    });
-
-    worker.on('error', (error) => {
-      const endTime = new Date();
-      const executionTime = (endTime - startTime) / 1000;
-      logger.error(`Worker error at: ${endTime.toISOString()} (Execution Time: ${executionTime} seconds)`, error);
-      reject(error);
-    });
-
-    worker.on('exit', (code) => {
-      if (code !== 0) {
-        const endTime = new Date();
-        const executionTime = (endTime - startTime) / 1000;
-        const error = new Error(`Worker stopped with exit code ${code}`);
-        logger.error(`Worker exit at: ${endTime.toISOString()} (Execution Time: ${executionTime} seconds)`, error);
-        reject(error);
-      }
-    });
-  });
-}
-async function runSeoMetaSync() {
-  try {
-    const names = ['PETROL', 'DIESEL'];
-    const city = 'India';
-    for (const name of names) {
-      await updateSeoMeta(name, city);
-    }
-    return true;
-  } catch (error) {
-    console.log(error);
-    logger.error('Failed to execute sync job:', error);
-  }
-}
-// Schedule the cron job runs at 12:01 AM every day
-cron.schedule("1 0 * * *", async () => {
-  try {
-    await runSyncWorker();
-  } catch (error) {
-    logger.error('Failed to execute sync job:', error);
-  }
-});
-
-// Schedule the SEO meta sync job runs at 12:01 AM every day
-cron.schedule("1 0 * * *", async () => {
-  try {
-    await runSeoMetaSync();
-  } catch (error) {
-    logger.error('Failed to execute sync job:', error);
-  }
-});
