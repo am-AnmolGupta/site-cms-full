@@ -3,7 +3,6 @@ const adminRouter = express.Router();
 
 import { AdminController } from "../app/Controllers/Admin/AdminController.mjs";
 import { AuthController } from "../app/Controllers/Admin/AuthController.mjs";
-import { BrandController } from "../app/Controllers/Admin/BrandController.mjs";
 
 import { CheckAuthMiddleware } from "../app/Middleware/CheckAuthMiddleware.mjs";
 import { AdminRoleMiddleware } from "../app/Middleware/AdminRoleMiddleware.mjs";
@@ -17,8 +16,6 @@ adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);
 
-adminRouter.post("/add/brand", BrandController.addBrand);
-adminRouter.get("/brands", BrandController.brandList);
 
 
 
