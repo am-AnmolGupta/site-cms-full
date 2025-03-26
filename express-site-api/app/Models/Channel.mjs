@@ -54,13 +54,6 @@ const ChannelSchema = mongoose.Schema({
   timestamps: true
 });
 
-ChannelSchema.virtual('seoImageURL').get(function () {
-  return this.seoImage ? process.env.IMAGE_URL + this.seoImage : "";
-});
-
-ChannelSchema.set('toJSON', {
-  virtuals: true
-});
 ChannelSchema.plugin(mongoosePaginate);
 const Channel = mongoose.model('channels', ChannelSchema);
 

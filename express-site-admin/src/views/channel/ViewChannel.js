@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilPlus } from "@coreui/icons";
 import {
@@ -9,6 +9,8 @@ import {
   CButton
 } from "@coreui/react";
 import DataTable from "../../components/DataTable";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ViewChannel = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
@@ -19,6 +21,21 @@ const ViewChannel = () => {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   const [totalDocs, setTotalDocs] = useState(0);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.message) {
+      toast.success(location.state.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  }, [location]);
 
   useEffect(() => {
     const getChannel = async () => {
@@ -39,7 +56,12 @@ const ViewChannel = () => {
         if (json.status_code === 403) {
           navigate("/403");
         } else {
-          setChannel(json.data.docs);
+          const formattedData = json.data.docs.map((item) => ({
+            ...item,
+            id: item._id,
+          }));
+
+          setChannel(formattedData);
           setTotalDocs(json.data.totalDocs);
         }
       } catch (error) {
@@ -78,18 +100,13 @@ const ViewChannel = () => {
       field: "title",
       headerName: "Name",
       flex: 1,
-      minWidth: 150,
+      minWidth: 120,
     },
     {
       field: "slug",
       headerName: "Slug",
       flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "cmsChannelId",
-      headerName: "Channel ID",
-      width: 100,
+      minWidth: 100,
     },
     {
       field: "createdAt",
@@ -142,30 +159,33 @@ const ViewChannel = () => {
   ];
 
   return (
-    <CCard className="mb-4">
-      <CCardHeader className="d-flex justify-content-between align-items-center">
-        <h3 className="m-0">Channel Dashboard</h3>
-        <CButton
-          color="primary"
-          variant="outline"
-          onClick={redirectToBrandAdd}
-        >
-          <CIcon icon={cilPlus} className="me-2" />
-          Add Channel
-        </CButton>
-      </CCardHeader>
-      <CCardBody>
-        <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
-          <DataTable
-            channel={channel}
-            columns={columns}
-            totalDocs={totalDocs}
-            paginationModel={paginationModel}
-            setPaginationModel={setPaginationModel}
-          />
-        </div>
-      </CCardBody>
-    </CCard>
+    <>
+      <ToastContainer />
+      <CCard className="mb-4">
+        <CCardHeader className="d-flex justify-content-between align-items-center">
+          <h3 className="m-0">Channel Dashboard</h3>
+          <CButton
+            color="primary"
+            variant="outline"
+            onClick={redirectToBrandAdd}
+          >
+            <CIcon icon={cilPlus} className="me-2" />
+            Add Channel
+          </CButton>
+        </CCardHeader>
+        <CCardBody>
+          <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
+            <DataTable
+              channel={channel}
+              columns={columns}
+              totalDocs={totalDocs}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+            />
+          </div>
+        </CCardBody>
+      </CCard>
+    </>
   );
 };
 

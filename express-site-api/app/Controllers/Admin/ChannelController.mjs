@@ -1,80 +1,51 @@
-import { Admin } from "../../Models/Admin.mjs";
 import { Validator } from 'node-input-validator';
-import { Role } from "../../Models/Role.mjs";
-import bcrypt from 'bcryptjs';
 import { success, failed, failedValidation, validationFailedRes } from "../../Helper/response.mjs";
 import mongoose from "mongoose";
 import { Channel } from "../../Models/Channel.mjs";
-
+import { fileUpload } from '../../Helper/util.mjs';
 export class ChannelController {
 
-    static async addUser(req, res) {
+    static async addEditChannel(req, res) {
         try {
-            let isExist = await Admin.findOne({ email: req.body.email });
-            if (isExist && !req.body.hasOwnProperty('userId')) {
-                return success(res, "user already exist!");
-            }
+            const { channelId, status, slug } = req.body;
+
             const valid = new Validator(req.body, {
-                name: 'required',
-                email: 'required|email',
-                roles: 'required|array',
+                title: "required",
+                slug: "required",
             });
-            const matched = await valid.check()
-            if (!matched)
-                return validationFailedRes(res, valid);
-            if (req.body.status) {
-                req.body.deletedAt = (req.body.status == 'inactive') ? new Date() : null;
-            }
-            if (!isExist) {
-                const hashedPassword = await bcrypt.hash(req.body.email, 12);
-                req.body.password = hashedPassword;
-            }
-            if (req.body.userId) {
-                const filter = { _id: mongoose.Types.ObjectId(req.body.userId) };
-                await Admin.findOneAndUpdate(filter, req.body);
-                return success(res, "user updated successfully!");
+            if (!(await valid.check())) return validationFailedRes(res, valid);
 
+            req.body.deletedAt = status === "inactive" ? new Date() : null;
+
+            if (channelId) {
+                const existingChannel = await Channel.findById(channelId);
+                if (!existingChannel) return failed(res, {}, "Channel not found", 404);
+
+                // Retain existing values if no new file is uploaded
+                req.body.logoUnit = req.files?.logoUnit
+                    ? fileUpload(req.files.logoUnit, `${slug}-logo`)
+                    : existingChannel.logoUnit || "";
+
+                req.body.seoImage = req.files?.seoImage
+                    ? fileUpload(req.files.seoImage, `${slug}-seo-image`)
+                    : existingChannel.seoImage || "";
             } else {
-                await Admin.create(req.body);
-                return success(res, "user added successfully!");
+                // Handle cases where channelId is not provided (New channel creation)
+                req.body.logoUnit = req.files?.logoUnit ? fileUpload(req.files.logoUnit, `${slug}-logo`) : "";
+                req.body.seoImage = req.files?.seoImage ? fileUpload(req.files.seoImage, `${slug}-seo-image`) : "";
             }
 
-        } catch (error) {
-            return failed(res, {}, error.message, 400);
-        }
-    }
-    static async users(req, res) {
-        try {
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
-            const users = await Admin.paginate({}, { page, limit });
-            //const users = await Admin.find();
-            return success(res, "users list", users, 200);
-        } catch (error) {
-            return failed(res, {}, error.message, 400);
-        }
-    }
-    static async addRole(req, res) {
-        try {
-            const valid = new Validator(req.body, {
-                role: 'required'
-            });
-            const matched = await valid.check()
-            if (!matched)
-                return validationFailedRes(res, valid);
-            if (req.body.status == "inactive") {
-                req.body.deletedAt = new Date()
-            }
-            if (req.body.roleId) {
-                console.log(req.body);
-                const filter = { _id: mongoose.Types.ObjectId(req.body.roleId) };
-                await Role.findOneAndUpdate(filter, req.body);
-                return success(res, "role updated successfully!");
 
+            let channel;
+            if (channelId && mongoose.Types.ObjectId.isValid(channelId)) {
+                channel = await Channel.findByIdAndUpdate(channelId, req.body, { new: true });
+                if (!channel) return failed(res, {}, "Channel not found", 404);
             } else {
-                await Role.create(req.body);
-                return success(res, "role added successfully!");
+                channel = await Channel.create(req.body);
             }
+
+            const message = channelId ? "Channel updated successfully!" : "Channel added successfully!";
+            return success(res, message, channel);
         } catch (error) {
             return failed(res, {}, error.message, 400);
         }
@@ -83,7 +54,7 @@ export class ChannelController {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const channels = await Channel.paginate({}, { page, limit });
+            const channels = await Channel.paginate({}, { page, limit, sort: { createdAt: -1 } });
 
             return success(res, "Channel list", channels, 200);
         } catch (error) {

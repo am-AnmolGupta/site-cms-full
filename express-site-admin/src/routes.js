@@ -9,7 +9,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/channel', name: 'Channel', element: Channel },
   { path: '/channel/add', name: 'Add Channel', element: AddEditChannel },
-  { path: '/channel/:id/edit', name: 'Edit Channel', element: AddEditChannel },
+  { path: '/channel/:channelId/edit', name: 'Edit Channel', element: AddEditChannel },
 ]
 
 export default routes

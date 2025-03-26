@@ -9,13 +9,17 @@ import { AdminRoleMiddleware } from "../app/Middleware/AdminRoleMiddleware.mjs";
 import { LogController } from '../app/Controllers/Admin/LogController.mjs';
 
 import { ChannelController } from '../app/Controllers/Admin/ChannelController.mjs';
-
+import { ModuleController } from '../app/Controllers/Admin/ModuleController.mjs';
 
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
 adminRouter.post("/update/password", AuthController.updatePassword);
 
+adminRouter.post("/module/details", ModuleController.moduleDetail);
+
 adminRouter.get("/channels", ChannelController.channels);
+adminRouter.post("/add-edit-channel", ChannelController.addEditChannel);
+
 adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);
