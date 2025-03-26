@@ -8,10 +8,14 @@ import { CheckAuthMiddleware } from "../app/Middleware/CheckAuthMiddleware.mjs";
 import { AdminRoleMiddleware } from "../app/Middleware/AdminRoleMiddleware.mjs";
 import { LogController } from '../app/Controllers/Admin/LogController.mjs';
 
+import { ChannelController } from '../app/Controllers/Admin/ChannelController.mjs';
+
+
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
 adminRouter.post("/update/password", AuthController.updatePassword);
 
+adminRouter.get("/channels", ChannelController.channels);
 adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);

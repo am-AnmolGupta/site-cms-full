@@ -1,13 +1,16 @@
+import { Admin } from "../../Models/Admin.mjs";
 import { Validator } from 'node-input-validator';
+import { Role } from "../../Models/Role.mjs";
+import bcrypt from 'bcryptjs';
 import { success, failed, failedValidation, validationFailedRes } from "../../Helper/response.mjs";
 import mongoose from "mongoose";
-import { Channel } from '../../Models/Channelw.mjs';
+import { Channel } from "../../Models/Channel.mjs";
 
 export class ChannelController {
 
-    static async addChannel(req, res) {
+    static async addUser(req, res) {
         try {
-            let isExist = await Channel.findOne({ email: req.body.email });
+            let isExist = await Admin.findOne({ email: req.body.email });
             if (isExist && !req.body.hasOwnProperty('userId')) {
                 return success(res, "user already exist!");
             }
@@ -28,14 +31,50 @@ export class ChannelController {
             }
             if (req.body.userId) {
                 const filter = { _id: mongoose.Types.ObjectId(req.body.userId) };
-                await Channel.findOneAndUpdate(filter, req.body);
+                await Admin.findOneAndUpdate(filter, req.body);
                 return success(res, "user updated successfully!");
 
             } else {
-                await Channel.create(req.body);
+                await Admin.create(req.body);
                 return success(res, "user added successfully!");
             }
 
+        } catch (error) {
+            return failed(res, {}, error.message, 400);
+        }
+    }
+    static async users(req, res) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const users = await Admin.paginate({}, { page, limit });
+            //const users = await Admin.find();
+            return success(res, "users list", users, 200);
+        } catch (error) {
+            return failed(res, {}, error.message, 400);
+        }
+    }
+    static async addRole(req, res) {
+        try {
+            const valid = new Validator(req.body, {
+                role: 'required'
+            });
+            const matched = await valid.check()
+            if (!matched)
+                return validationFailedRes(res, valid);
+            if (req.body.status == "inactive") {
+                req.body.deletedAt = new Date()
+            }
+            if (req.body.roleId) {
+                console.log(req.body);
+                const filter = { _id: mongoose.Types.ObjectId(req.body.roleId) };
+                await Role.findOneAndUpdate(filter, req.body);
+                return success(res, "role updated successfully!");
+
+            } else {
+                await Role.create(req.body);
+                return success(res, "role added successfully!");
+            }
         } catch (error) {
             return failed(res, {}, error.message, 400);
         }
@@ -44,9 +83,9 @@ export class ChannelController {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const users = await Channel.paginate({}, { page, limit });
-            //const users = await Channel.find();
-            return success(res, "users list", users, 200);
+            const channels = await Channel.paginate({}, { page, limit });
+
+            return success(res, "Channel list", channels, 200);
         } catch (error) {
             return failed(res, {}, error.message, 400);
         }

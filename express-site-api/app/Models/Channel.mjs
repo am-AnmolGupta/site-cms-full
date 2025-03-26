@@ -54,7 +54,7 @@ const ChannelSchema = mongoose.Schema({
   timestamps: true
 });
 
-ChannelSchema.virtual('seoImage').get(function () {
+ChannelSchema.virtual('seoImageURL').get(function () {
   return this.seoImage ? process.env.IMAGE_URL + this.seoImage : "";
 });
 
