@@ -10,6 +10,7 @@ import { LogController } from '../app/Controllers/Admin/LogController.mjs';
 
 import { ChannelController } from '../app/Controllers/Admin/ChannelController.mjs';
 import { ModuleController } from '../app/Controllers/Admin/ModuleController.mjs';
+import { ProfileController } from '../app/Controllers/Admin/ProfileController.mjs';
 
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
@@ -23,6 +24,8 @@ adminRouter.get("/channel-social-links", ChannelController.channelSocialLinks);
 adminRouter.post("/add-social-links", ChannelController.addSocialLinks);
 adminRouter.post("/edit-social-link", ChannelController.editSocialLinks);
 
+adminRouter.get("/profiles", ProfileController.profiles);
+adminRouter.post("/add-edit-profile", ProfileController.addEditProfile);
 adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);
