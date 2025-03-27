@@ -1,6 +1,17 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
+const socialLinkSchema = new mongoose.Schema(
+  {
+    _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+    platform: { type: String, required: true },
+    description: { type: String, required: false },
+    url: { type: String, required: true },
+    logo: { type: String, required: false },
+    deletedAt: { type: Date, default: null }
+  },
+  { timestamps: true }
+);
 const ChannelSchema = mongoose.Schema({
   title: {
     type: String,
@@ -35,8 +46,8 @@ const ChannelSchema = mongoose.Schema({
     required: false
   },
   socialLinks: {
-    type: String,
-    required: false
+    type: [socialLinkSchema],
+    default: [],
   },
   logoUnit: {
     type: String,

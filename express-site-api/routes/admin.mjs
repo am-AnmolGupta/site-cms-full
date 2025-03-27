@@ -19,6 +19,9 @@ adminRouter.post("/module/details", ModuleController.moduleDetail);
 
 adminRouter.get("/channels", ChannelController.channels);
 adminRouter.post("/add-edit-channel", ChannelController.addEditChannel);
+adminRouter.get("/channel-social-links", ChannelController.channelSocialLinks);
+adminRouter.post("/add-social-links", ChannelController.addSocialLinks);
+adminRouter.post("/edit-social-link", ChannelController.editSocialLinks);
 
 adminRouter.use(CheckAuthMiddleware);
 

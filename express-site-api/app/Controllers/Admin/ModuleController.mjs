@@ -11,6 +11,13 @@ export class ModuleController extends Error {
         case 'channel':
           module = await Channel.findById(moduleId);
           break;
+        case 'socialLink':
+          const socialLinks = await Channel.findById(moduleId).select('socialLinks');
+          const { socialLinkId } = req.body;
+
+          const matchingSocialLink = socialLinks.socialLinks.find(link => link._id.toString() === socialLinkId);
+          module = matchingSocialLink;
+          break;
         default:
           return customFailedMessage(res, "Module type not found", 400);
       }

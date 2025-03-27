@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { cilBusAlt, cilBook, cilCamera } from "@coreui/icons";
+import { cilCompass, cilShare } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CCard, CCardHeader, CCardBody, CButton, CForm } from "@coreui/react";
 
@@ -23,7 +23,6 @@ const AddEditChannel = () => {
     seoImagePreview: "",
     seoKeywords: "",
     cmsChannelId: "",
-    socialLinks: "",
     ga: "",
     comScore: "",
     status: "active",
@@ -60,8 +59,16 @@ const AddEditChannel = () => {
 
       const data = response.data.data;
       setInputFields({
-        ...data,
         channelId: data._id,
+        title: data.title,
+        slug: data.slug,
+        description: data.description,
+        seoTitle: data.seoTitle,
+        seoDescription: data.seoDescription,
+        seoKeywords: data.seoKeywords,
+        cmsChannelId: data.cmsChannelId,
+        ga: data.ga,
+        comScore: data.comScore,
         logoUnit: null,
         logoUnitPreview: data.logoUnit
           ? `${import.meta.env.VITE_IMAGE_URL}${data.logoUnit}`
@@ -152,9 +159,16 @@ const AddEditChannel = () => {
       <CCardHeader className="d-flex justify-content-between align-items-center">
         <h4 className="m-0">{isEdit ? "Edit Channel" : "Add Channel"}</h4>
         {isEdit && (
-          <CButton color="primary" variant="outline">
-            Navigation
-          </CButton>
+          <div className="ms-auto d-flex gap-2">
+            <CButton color="success" variant="outline" component="a" href={`/channel/${channelId}/navigation`}>
+              <CIcon icon={cilCompass} className="me-2" />
+              Navigation
+            </CButton>
+            <CButton color="info" variant="outline" component="a" href={`/channel/${channelId}/social-links`}>
+              <CIcon icon={cilShare} className="me-2" />
+              Social Links
+            </CButton>
+          </div>
         )}
       </CCardHeader>
       <CCardBody>
@@ -295,6 +309,32 @@ const AddEditChannel = () => {
               id="seoKeywords"
               name="seoKeywords"
               value={inputFields.seoKeywords}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="ga" className="form-label">
+              GA Tracking Id
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="ga"
+              name="ga"
+              value={inputFields.ga}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="comScore" className="form-label">
+              ComScore
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="comScore"
+              name="comScore"
+              value={inputFields.comScore}
               onChange={handleChange}
             />
           </div>
