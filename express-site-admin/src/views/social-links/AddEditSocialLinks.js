@@ -14,7 +14,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AddEditSocialLinks = () => {
-  const { channelId, socialLinkId } = useParams();
+  const { channelId, profileId, socialLinkId } = useParams();
   const navigate = useNavigate();
   const url = import.meta.env.VITE_USERS_API_URL;
   const [isEdit, setIsEdit] = useState(false);
@@ -39,9 +39,10 @@ const AddEditSocialLinks = () => {
 
   const getSocialLinks = async () => {
     try {
+      const params = channelId ? { moduleType: "channelSocialLink", moduleId: channelId, socialLinkId } : { moduleType: "profileSocialLink", moduleId: profileId, socialLinkId };
       const response = await axios.post(
         `${url}/admin/module/details`,
-        { moduleType: "socialLink", moduleId: channelId, socialLinkId },
+        params,
         { headers: { Authorization: `Bearer token` } }
       );
 
@@ -106,7 +107,6 @@ const AddEditSocialLinks = () => {
       formData.append("url", link.url);
       formData.append("description", link.description);
       if (link.logo) formData.append("logo", link.logo);
-      formData.append("channelId", channelId);
     } else {
       socialLinks.forEach((link, index) => {
         formData.append(`socialLinks[${index}][platform]`, link.platform);
@@ -114,21 +114,28 @@ const AddEditSocialLinks = () => {
         formData.append(`socialLinks[${index}][description]`, link.description);
         if (link.logo) formData.append(`socialLinks[${index}][logo]`, link.logo);
       });
-      formData.append('channelId', channelId);
+    }
+    if (channelId) {
+      formData.append("channelId", channelId);
+    } else {
+      formData.append("profileId", profileId);
     }
 
     try {
       if (isEdit) {
         formData.append("socialLinkId", socialLinkId);
-        await axios.post(`${url}/admin/edit-social-link`, formData, {
+        const apiUrl = channelId ? `${url}/admin/edit-channel-social-link` : `${url}/admin/edit-profile-social-link`;
+        await axios.post(apiUrl, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await axios.post(`${url}/admin/add-social-links`, formData, {
+        const apiUrl = channelId ? `${url}/admin/add-channel-social-links` : `${url}/admin/add-profile-social-links`;
+        await axios.post(apiUrl, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
-      navigate("/channel", { state: { message: "Social links updated successfully!" } });
+      const redirectUrl = profileId ? `/profiles/${profileId}/social-links` : `/channel/${channelId}/social-links`;
+      navigate(redirectUrl, { state: { message: "Social links updated successfully!" } });
     } catch (error) {
       console.error("Error saving social links:", error);
     }

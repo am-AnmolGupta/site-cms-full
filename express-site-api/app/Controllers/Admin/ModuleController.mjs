@@ -5,22 +5,26 @@ import { Profile } from "../../Models/Profile.mjs";
 export class ModuleController extends Error {
   static async moduleDetail(req, res) {
     try {
-      const { moduleType, moduleId } = req.body;
+      const { moduleType, moduleId, socialLinkId } = req.body;
       let module;
 
       switch (moduleType) {
         case 'channel':
           module = await Channel.findById(moduleId);
           break;
-        case 'socialLink':
-          const socialLinks = await Channel.findById(moduleId).select('socialLinks');
-          const { socialLinkId } = req.body;
+        case 'channelSocialLink':
+          const channel = await Channel.findById(moduleId).select('socialLinks');
 
-          const matchingSocialLink = socialLinks.socialLinks.find(link => link._id.toString() === socialLinkId);
-          module = matchingSocialLink;
+          module = channel.socialLinks.find(link => link._id.toString() === socialLinkId);
+
           break;
         case 'profile':
           module = await Profile.findById(moduleId);
+          break;
+        case 'profileSocialLink':
+          const profile = await Profile.findById(moduleId).select('socialLinks');
+
+          module = profile.socialLinks.find(link => link._id.toString() === socialLinkId);
           break;
         default:
           return customFailedMessage(res, "Module type not found", 400);

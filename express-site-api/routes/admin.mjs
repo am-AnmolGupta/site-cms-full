@@ -21,13 +21,14 @@ adminRouter.post("/module/details", ModuleController.moduleDetail);
 adminRouter.get("/channels", ChannelController.channels);
 adminRouter.post("/add-edit-channel", ChannelController.addEditChannel);
 adminRouter.get("/channel-social-links", ChannelController.channelSocialLinks);
-adminRouter.post("/add-social-links", ChannelController.addSocialLinks);
-adminRouter.post("/edit-social-link", ChannelController.editSocialLinks);
+adminRouter.post("/add-channel-social-links", ChannelController.addSocialLinks);
+adminRouter.post("/edit-channel-social-link", ChannelController.editSocialLinks);
 
 adminRouter.get("/profiles", ProfileController.profiles);
 adminRouter.post("/add-edit-profile", ProfileController.addEditProfile);
 adminRouter.get("/profile-social-links", ProfileController.profileSocialLinks);
-
+adminRouter.post("/add-profile-social-links", ProfileController.addSocialLinks);
+adminRouter.post("/edit-profile-social-link", ProfileController.editSocialLinks);
 adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);

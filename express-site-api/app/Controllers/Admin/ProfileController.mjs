@@ -73,5 +73,86 @@ export class ProfileController {
             return failed(res, {}, error.message, 400);
         }
     }
+    static async addSocialLinks(req, res) {
+        try {
+            // Convert flattened socialLinks to an array
+            const socialLinks = [];
+            Object.keys(req.body).forEach((key) => {
+                const match = key.match(/^socialLinks\[(\d+)]\[(\w+)]$/);
+                if (match) {
+                    const index = parseInt(match[1]);
+                    const field = match[2];
+                    if (!socialLinks[index]) {
+                        // Ensure object exists with default values
+                        socialLinks[index] = { platform: "", description: "", url: "" };
+                    }
+                    socialLinks[index][field] = req.body[key] || ""; // Ensure empty string if missing
+                }
+            });
 
+            // Validate that all social links contain required fields
+            for (const link of socialLinks) {
+                if (!link.platform || !link.url || !link.description) {
+                    return failed(res, {}, "All social link fields are required", 422);
+                }
+            }
+
+            req.body.socialLinks = socialLinks;
+
+            const valid = new Validator(req.body, {
+                profileId: "required",
+                socialLinks: "required|array",
+            });
+
+            if (!(await valid.check())) return validationFailedRes(res, valid);
+
+            const { profileId } = req.body;
+            const profile = await Profile.findById(profileId);
+
+            if (!profile) return failed(res, {}, "Profile not found", 404);
+
+            // Append new social links while avoiding duplicates
+            profile.socialLinks = [...(profile.socialLinks || []), ...socialLinks];
+            await profile.save();
+
+            return success(res, profile, "Social links updated successfully");
+        } catch (error) {
+            return failed(res, {}, error.message, 400);
+        }
+    }
+    static async editSocialLinks(req, res) {
+        try {
+            const valid = new Validator(req.body, {
+                profileId: "required",
+                socialLinkId: "required",
+                platform: "required",
+                description: "required",
+                url: "required",
+            });
+
+            if (!(await valid.check())) return validationFailedRes(res, valid);
+
+            const { profileId, socialLinkId, platform, description, url } = req.body;
+
+            const profile = await Profile.findById(profileId).select("socialLinks");
+            if (!profile) return failed(res, {}, "Profile not found", 404);
+
+            const socialLinkIndex = profile.socialLinks.findIndex(link => link._id.toString() === socialLinkId);
+            if (socialLinkIndex === -1) return failed(res, {}, "Social Link not found", 404);
+
+            // Update only specified fields
+            profile.socialLinks[socialLinkIndex].platform = platform;
+            profile.socialLinks[socialLinkIndex].description = description;
+            profile.socialLinks[socialLinkIndex].url = url;
+            profile.socialLinks[socialLinkIndex].logo = req.files?.logo
+                ? fileUpload(req.files.logo, `${platform}-${socialLinkId}-logo`)
+                : profile.socialLinks[socialLinkIndex].logo;
+
+            await profile.save();
+
+            return success(res, profile.socialLinks[socialLinkIndex], "Social Link updated successfully!");
+        } catch (error) {
+            return failed(res, {}, error.message, 400);
+        }
+    }
 }
