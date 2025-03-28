@@ -13,7 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ViewSocialLinks = () => {
-  const { channelId } = useParams();
+  const { channelId, profileId } = useParams();
   const url = import.meta.env.VITE_USERS_API_URL;
   const navigate = useNavigate();
 
@@ -42,8 +42,9 @@ const ViewSocialLinks = () => {
     const getSocialLinks = async () => {
       try {
         const token = "";
+        const api = `${url}/admin/${profileId ? `profile-social-links?profileId=${profileId}` : `channel-social-links?channelId=${channelId}`}`;
         const response = await fetch(
-          `${url}/admin/channel-social-links?channelId=${channelId}`,
+          `${api}`,
           {
             method: "GET",
             headers: {
@@ -74,11 +75,19 @@ const ViewSocialLinks = () => {
   }, [paginationModel]);
 
   const handleEdit = (item) => {
-    navigate(`/channel/${channelId}/social-links/${item._id}/edit`, { state: { itemData: item } });
+    const redirectUrl = profileId
+      ? `/profiles/${profileId}/social-links/${item._id}/edit`
+      : `/channel/${channelId}/social-links/${item._id}/edit`;
+
+    navigate(redirectUrl);
   };
 
   const redirectToBrandAdd = () => {
-    navigate(`/channel/${channelId}/social-links/add`);
+    const redirectUrl = profileId
+      ? `/profiles/${profileId}/social-links/add`
+      : `/channel/${channelId}/social-links/add`;
+
+    navigate(redirectUrl);
   };
 
   const columns = [

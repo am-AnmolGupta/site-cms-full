@@ -155,6 +155,14 @@ const AddEditProfile = () => {
     <CCard className="mb-4">
       <CCardHeader className="d-flex justify-content-between align-items-center">
         <h4 className="m-0">{isEdit ? "Edit Profile" : "Add Profile"}</h4>
+        {isEdit && (
+          <div className="ms-auto d-flex gap-2">
+            <CButton color="info" variant="outline" component="a" href={`/profiles/${profileId}/social-links`}>
+              <CIcon icon={cilShare} className="me-2" />
+              Social Links
+            </CButton>
+          </div>
+        )}
       </CCardHeader>
       <CCardBody>
         <CForm onSubmit={handleSubmit}>

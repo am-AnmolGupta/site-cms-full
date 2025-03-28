@@ -26,6 +26,8 @@ adminRouter.post("/edit-social-link", ChannelController.editSocialLinks);
 
 adminRouter.get("/profiles", ProfileController.profiles);
 adminRouter.post("/add-edit-profile", ProfileController.addEditProfile);
+adminRouter.get("/profile-social-links", ProfileController.profileSocialLinks);
+
 adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);

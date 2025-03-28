@@ -59,4 +59,19 @@ export class ProfileController {
             return failed(res, {}, error.message, 400);
         }
     }
+    static async profileSocialLinks(req, res) {
+        try {
+            const valid = new Validator(req.query, {
+                profileId: "required",
+            });
+            if (!(await valid.check())) return validationFailedRes(res, valid);
+            const { profileId } = req.query;
+            const profileSocialLinks = await Profile.findById(profileId, "socialLinks");
+
+            return success(res, "Profile Social Links list", profileSocialLinks, 200);
+        } catch (error) {
+            return failed(res, {}, error.message, 400);
+        }
+    }
+
 }
