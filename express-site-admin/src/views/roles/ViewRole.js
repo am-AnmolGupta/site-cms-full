@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilPlus } from "@coreui/icons";
+import { getCookie } from '../../Helper/cookieHelper';
 import {
   CCard,
   CCardBody,
@@ -12,12 +13,11 @@ import DataTable from "../../components/DataTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ViewChannel = () => {
+const ViewBrand = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
-  const navigate = useNavigate();
+  const [person, setPerson] = useState([]);
+  const navigate = useNavigate(); // Use useNavigate hook for programmatic navigation
 
-  // Pagination state
-  const [channel, setChannel] = useState([]);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   const [totalDocs, setTotalDocs] = useState(0);
@@ -38,46 +38,43 @@ const ViewChannel = () => {
   }, [location]);
 
   useEffect(() => {
-    const getChannel = async () => {
+    const getBrand = async () => {
       try {
-        const token = "";
-        const response = await fetch(
-          `${url}/admin/channels?page=${paginationModel.page + 1}&limit=${paginationModel.pageSize}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const token = getCookie('authToken=');
+        const response = await fetch(`${url}/admin/roles`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+        });
         const json = await response.json();
         if (json.status_code === 403) {
           navigate("/403");
-        } else {
+        }
+        else {
           const formattedData = json.data.docs.map((item) => ({
             ...item,
             id: item._id,
           }));
 
-          setChannel(formattedData);
+          setPerson(formattedData);
           setTotalDocs(json.data.totalDocs);
         }
       } catch (error) {
-        console.error("Error fetching channel:", error);
+        console.error("Error fetching roles:", error);
       }
     };
 
-    getChannel();
-  }, [paginationModel]);
-
+    getBrand();
+    // eslint-disable-next-line
+  }, []);
   const handleEdit = (item) => {
-    navigate(`/channel/${item._id}/edit`, { state: { itemData: item } });
+    navigate(`/roles/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
   };
 
   const redirectToBrandAdd = () => {
-    navigate("/channel/add");
+    navigate("/roles/add");
   };
 
   const columns = [
@@ -97,16 +94,10 @@ const ViewChannel = () => {
       ),
     },
     {
-      field: "title",
-      headerName: "Name",
+      field: "role",
+      headerName: "Role",
       flex: 1,
       minWidth: 120,
-    },
-    {
-      field: "slug",
-      headerName: "Slug",
-      flex: 1,
-      minWidth: 100,
     },
     {
       field: "createdAt",
@@ -157,26 +148,25 @@ const ViewChannel = () => {
       },
     },
   ];
-
   return (
     <>
       <ToastContainer />
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center">
-          <h3 className="m-0">Channels Dashboard</h3>
+          <h3 className="m-0">Role Dashboard</h3>
           <CButton
             color="primary"
             variant="outline"
             onClick={redirectToBrandAdd}
           >
             <CIcon icon={cilPlus} className="me-2" />
-            Add Channel
+            Add Role
           </CButton>
         </CCardHeader>
         <CCardBody>
           <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
             <DataTable
-              channel={channel}
+              channel={person}
               columns={columns}
               totalDocs={totalDocs}
               paginationModel={paginationModel}
@@ -189,4 +179,4 @@ const ViewChannel = () => {
   );
 };
 
-export default ViewChannel;
+export default ViewBrand;

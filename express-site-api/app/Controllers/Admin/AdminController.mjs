@@ -80,7 +80,10 @@ export class AdminController {
     }
     static async roleList(req, res) {
         try {
-            const roles = await Role.find();
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const roles = await Role.paginate({}, { page, limit });
+
             return success(res, "role list", roles, 200);
         } catch (error) {
             return failed(res, {}, error.message, 400);

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilPlus } from "@coreui/icons";
+import { getCookie } from '../../Helper/cookieHelper';
+import { ToastContainer } from "react-toastify";
 import {
   CCard,
   CCardBody,
@@ -9,49 +11,24 @@ import {
   CButton
 } from "@coreui/react";
 import DataTable from "../../components/DataTable";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-const ViewChannel = () => {
+const ViewBrand = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
-  const navigate = useNavigate();
-
-  // Pagination state
-  const [channel, setChannel] = useState([]);
+  const [person, setPerson] = useState([]);
+  const navigate = useNavigate(); // Use useNavigate hook for programmatic navigation
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   const [totalDocs, setTotalDocs] = useState(0);
-
-  const location = useLocation();
-
   useEffect(() => {
-    if (location.state?.message) {
-      toast.success(location.state.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-    }
-  }, [location]);
-
-  useEffect(() => {
-    const getChannel = async () => {
+    const getBrand = async () => {
       try {
-        const token = "";
-        const response = await fetch(
-          `${url}/admin/channels?page=${paginationModel.page + 1}&limit=${paginationModel.pageSize}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const token = getCookie('authToken=');
+        const response = await fetch(`${url}/admin/users`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+          },
+        });
         const json = await response.json();
         if (json.status_code === 403) {
           navigate("/403");
@@ -60,24 +37,23 @@ const ViewChannel = () => {
             ...item,
             id: item._id,
           }));
-
-          setChannel(formattedData);
+          setPerson(formattedData);
           setTotalDocs(json.data.totalDocs);
         }
       } catch (error) {
-        console.error("Error fetching channel:", error);
+        console.error("Error fetching persons:", error);
       }
     };
 
-    getChannel();
-  }, [paginationModel]);
-
+    getBrand();
+    // eslint-disable-next-line
+  }, []);
   const handleEdit = (item) => {
-    navigate(`/channel/${item._id}/edit`, { state: { itemData: item } });
+    navigate(`/users/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
   };
 
   const redirectToBrandAdd = () => {
-    navigate("/channel/add");
+    navigate("/users/add");
   };
 
   const columns = [
@@ -97,16 +73,25 @@ const ViewChannel = () => {
       ),
     },
     {
-      field: "title",
+      field: "name",
       headerName: "Name",
       flex: 1,
       minWidth: 120,
     },
     {
-      field: "slug",
-      headerName: "Slug",
+      field: "email",
+      headerName: "Email",
       flex: 1,
       minWidth: 100,
+    },
+    {
+      field: "roles",
+      headerName: "Roles",
+      flex: 1,
+      minWidth: 100,
+      valueGetter: (params) => {
+        return params.join(', ');
+      }
     },
     {
       field: "createdAt",
@@ -157,26 +142,25 @@ const ViewChannel = () => {
       },
     },
   ];
-
   return (
     <>
       <ToastContainer />
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center">
-          <h3 className="m-0">Channels Dashboard</h3>
+          <h3 className="m-0">Admins Dashboard</h3>
           <CButton
             color="primary"
             variant="outline"
             onClick={redirectToBrandAdd}
           >
             <CIcon icon={cilPlus} className="me-2" />
-            Add Channel
+            Add Admin
           </CButton>
         </CCardHeader>
         <CCardBody>
           <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
             <DataTable
-              channel={channel}
+              channel={person}
               columns={columns}
               totalDocs={totalDocs}
               paginationModel={paginationModel}
@@ -189,4 +173,4 @@ const ViewChannel = () => {
   );
 };
 
-export default ViewChannel;
+export default ViewBrand;
