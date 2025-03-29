@@ -19,20 +19,23 @@ const AddAdmin = React.lazy(() => import("./views/admin/AddAdmin.js"));
 const EditAdmin = React.lazy(() => import("./views/admin/EditAdmin.js"));
 
 const ViewRole = React.lazy(() => import("./views/roles/ViewRole"));
-const AddRole = React.lazy(() => import("./views/roles/AddRole"));
-const EditRole = React.lazy(() => import("./views/roles/EditRole"));
+const AddEditRole = React.lazy(() => import("./views/roles/AddEditRole.js"));
 
 const Log = React.lazy(() => import("./views/pages/log/Log.js"));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  
+  // Channel routes
   { path: '/channel', name: 'Channel', element: Channel },
   { path: '/channel/add', name: 'Add Channel', element: AddEditChannel },
   { path: '/channel/:channelId/edit', name: 'Edit Channel', element: AddEditChannel },
   { path: '/channel/:channelId/social-links', name: 'Social Links', element: SocialLinks },
   { path: '/channel/:channelId/social-links/add', name: 'Add Social Links', element: AddEditSocialLinks },
   { path: '/channel/:channelId/social-links/:socialLinkId/edit', name: 'Edit Social Links', element: AddEditSocialLinks },
+  
+  // Profile routes
   { path: '/profiles', name: 'Profiles', element: Profiles },
   { path: '/profiles/add', name: 'Add Profile', element: AddEditProfile },
   { path: '/profiles/:profileId/edit', name: 'Edit Profile', element: AddEditProfile },
@@ -40,16 +43,22 @@ const routes = [
   { path: '/profiles/:profileId/social-links/add', name: 'Edit Profile', element: AddEditSocialLinks },
   { path: '/profiles/:profileId/social-links/:socialLinkId/edit', name: 'Edit Profile', element: AddEditSocialLinks },
 
+  // User routes
   { path: "/users", name: "Users", element: Users },
   { path: "/user/:userId/edit", name: "Edit", element: EditUser },
 
+  // Log routes
   { path: "/log", name: "Log", element: Log },
+  
+  // Admin routes
   { path: "/admins", name: "Admins", element: ViewAdmin },
   { path: "/admin/add", name: "Add", element: AddAdmin },
   { path: "/admin/:id/edit", name: "Edit", element: EditAdmin },
+  
+  // Role routes
   { path: "/roles", name: "Role", element: ViewRole },
-  { path: "/role/add", name: "Add", element: AddRole },
-  { path: "/role/:roleId/edit", name: "Edit", element: EditRole },
+  { path: "/role/add", name: "Add", element: AddEditRole },
+  { path: "/role/:roleId/edit", name: "Edit", element: AddEditRole },
 ]
 
 export default routes

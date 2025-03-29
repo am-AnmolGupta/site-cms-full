@@ -30,7 +30,7 @@ adminRouter.post("/add-edit-profile", ProfileController.addEditProfile);
 adminRouter.get("/profile-social-links", ProfileController.profileSocialLinks);
 adminRouter.post("/add-profile-social-links", ProfileController.addSocialLinks);
 adminRouter.post("/edit-profile-social-link", ProfileController.editSocialLinks);
-adminRouter.use(CheckAuthMiddleware);
+// adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);
 
@@ -38,12 +38,12 @@ adminRouter.get("/users", UserController.users);
 
 
 
-adminRouter.use(AdminRoleMiddleware);
+// adminRouter.use(AdminRoleMiddleware);
 
 adminRouter.get("/admins", AdminController.users);
 adminRouter.post("/add-admin", AdminController.addUser);
 
-adminRouter.post("/add-role", AdminController.addRole);
+adminRouter.post("/add-edit-role", AdminController.addEditRole);
 adminRouter.get("/roles", AdminController.roleList);
 adminRouter.get("/log", LogController.getLog);
 

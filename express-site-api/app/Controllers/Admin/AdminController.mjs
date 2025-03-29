@@ -53,7 +53,7 @@ export class AdminController {
             return failed(res, {}, error.message, 400);
         }
     }
-    static async addRole(req, res) {
+    static async addEditRole(req, res) {
         try {
             const valid = new Validator(req.body, {
                 role: 'required'
@@ -64,12 +64,10 @@ export class AdminController {
             if (req.body.status == "inactive") {
                 req.body.deletedAt = new Date()
             }
-            if (req.body.roleId) {
-                console.log(req.body);
-                const filter = { _id: mongoose.Types.ObjectId(req.body.roleId) };
-                await Role.findOneAndUpdate(filter, req.body);
+            const { roleId } = req.body;
+            if (roleId) {
+                await Role.findByIdAndUpdate(roleId, req.body, { new: true });
                 return success(res, "role updated successfully!");
-
             } else {
                 await Role.create(req.body);
                 return success(res, "role added successfully!");
