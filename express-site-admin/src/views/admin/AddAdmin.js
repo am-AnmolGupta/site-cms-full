@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { useParams, useLocation } from "react-router-dom";
-import { getCookie } from '../../Helper/cookieHelper'
+import { getCookie } from '../../Helper/cookieHelper';
 
 const AddBrand = () => {
-  const { id } = useParams();
-  const [hasSet, setHasSet] = useState(false);
-
-  const location = useLocation();
   const url = import.meta.env.VITE_USERS_API_URL;
   const [person, setPerson] = useState([]);
   const [updatedPerson, setUpdatedPerson] = useState([]);
@@ -20,7 +15,7 @@ const AddBrand = () => {
     roles: [],
     mobile: "",
   });
-  const itemData = location.state?.itemData;
+
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [hasRun, setHasRun] = useState(false);
@@ -39,14 +34,6 @@ const AddBrand = () => {
   const handleChange = (e) => {
     setInputFields({ ...inputFields, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    const role = getCookie('authRole=');
-    const rolesArray = role ? role.split(',') : [];
-    const isSuperAdminOrAdmin = rolesArray.includes('superadmin');
-    if (!isSuperAdminOrAdmin) {
-      navigate("/403");
-    }
-  });
   const fetchPersons = async () => {
     try {
       const token = getCookie('authToken=');
@@ -67,7 +54,7 @@ const AddBrand = () => {
   const addPerson = async (inputValues) => {
     try {
       const token = getCookie('authToken=');
-      const response = await fetch(`${url}/admin/add-user`, {
+      const response = await fetch(`${url}/admin/add-admin`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +64,7 @@ const AddBrand = () => {
       });
       const json = await response.json();
       if (json) {
-        navigate("/users");
+        navigate("/admins");
       }
     } catch (error) {
       console.error("Error fetching person:", error);
@@ -98,28 +85,22 @@ const AddBrand = () => {
       const updatedInputFields = {
         ...inputFields,
         roles: updatedRoles,
-        userId: id
       };
       addPerson(updatedInputFields);
       setHasRun(true);
       setMessage("User added successfully! 🎉");
     }
     // eslint-disable-next-line
+  }, [errors, inputFields, submitting]);
 
-    if (itemData && !hasSet) {
-      setInputFields({
-        name: itemData.name,
-        email: itemData.email,
-        phone: itemData.phone,
-        roles: itemData.roles.map((role) => ({
-          value: role,
-          label: role
-        })),
-      });
-      setHasSet(true);
+  useEffect(() => {
+    const role = getCookie('authRole=');
+    const rolesArray = role ? role.split(',') : [];
+    const isSuperAdminOrAdmin = rolesArray.includes('superadmin');
+    if (!isSuperAdminOrAdmin) {
+      navigate("/403");
     }
-    // eslint-disable-next-line
-  }, [itemData, errors, hasRun, inputFields, submitting, id, navigate, url]);
+  });
 
   const validateValues = (inputValues) => {
     let emailRegex = /\S+@\S+\.\S+/;

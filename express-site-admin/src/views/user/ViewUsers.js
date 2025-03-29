@@ -13,9 +13,9 @@ import DataTable from "../../components/DataTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ViewBrand = () => {
+const ViewUsers = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
-  const [person, setPerson] = useState([]);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate(); // Use useNavigate hook for programmatic navigation
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
@@ -41,7 +41,7 @@ const ViewBrand = () => {
     const getBrand = async () => {
       try {
         const token = getCookie('authToken=');
-        const response = await fetch(`${url}/admin/roles`, {
+        const response = await fetch(`${url}/admin/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -58,11 +58,11 @@ const ViewBrand = () => {
             id: item._id,
           }));
 
-          setPerson(formattedData);
+          setUsers(formattedData);
           setTotalDocs(json.data.totalDocs);
         }
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Error fetching users:", error);
       }
     };
 
@@ -70,11 +70,7 @@ const ViewBrand = () => {
     // eslint-disable-next-line
   }, []);
   const handleEdit = (item) => {
-    navigate(`/role/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
-  };
-
-  const redirectToBrandAdd = () => {
-    navigate("/role/add");
+    navigate(`/user/${item._id}/edit`, { state: { itemData: item } }); // Pass users object
   };
 
   const columns = [
@@ -94,8 +90,26 @@ const ViewBrand = () => {
       ),
     },
     {
-      field: "role",
-      headerName: "Role",
+      field: "firstName",
+      headerName: "First Name",
+      flex: 1,
+      minWidth: 120,
+    },
+    {
+      field: "lastName",
+      headerName: "Last Name",
+      flex: 1,
+      minWidth: 120,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 250,
+    },
+    {
+      field: "mobile",
+      headerName: "Mobile",
       flex: 1,
       minWidth: 120,
     },
@@ -153,20 +167,12 @@ const ViewBrand = () => {
       <ToastContainer />
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center">
-          <h3 className="m-0">Role Dashboard</h3>
-          <CButton
-            color="primary"
-            variant="outline"
-            onClick={redirectToBrandAdd}
-          >
-            <CIcon icon={cilPlus} className="me-2" />
-            Add Role
-          </CButton>
+          <h3 className="m-0">Users Dashboard</h3>
         </CCardHeader>
         <CCardBody>
           <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
             <DataTable
-              channel={person}
+              channel={users}
               columns={columns}
               totalDocs={totalDocs}
               paginationModel={paginationModel}
@@ -179,4 +185,4 @@ const ViewBrand = () => {
   );
 };
 
-export default ViewBrand;
+export default ViewUsers;

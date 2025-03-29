@@ -11,9 +11,12 @@ const AddEditSocialLinks = React.lazy(() => import('./views/social-links/AddEdit
 const Profiles = React.lazy(() => import('./views/profiles/ViewProfiles'))
 const AddEditProfile = React.lazy(() => import('./views/profiles/AddEditProfile'))
 
-const ViewAdmin = React.lazy(() => import("./views/admin/ViewUser"));
-const AddAdmin = React.lazy(() => import("./views/admin/AddUser"));
-const EditAdmin = React.lazy(() => import("./views/admin/EditUser"));
+const Users = React.lazy(() => import('./views/user/ViewUsers'))
+const EditUser = React.lazy(() => import('./views/user/EditUser'))
+
+const ViewAdmin = React.lazy(() => import("./views/admin/ViewAdmin.js"));
+const AddAdmin = React.lazy(() => import("./views/admin/AddAdmin.js"));
+const EditAdmin = React.lazy(() => import("./views/admin/EditAdmin.js"));
 
 const ViewRole = React.lazy(() => import("./views/roles/ViewRole"));
 const AddRole = React.lazy(() => import("./views/roles/AddRole"));
@@ -37,13 +40,16 @@ const routes = [
   { path: '/profiles/:profileId/social-links/add', name: 'Edit Profile', element: AddEditSocialLinks },
   { path: '/profiles/:profileId/social-links/:socialLinkId/edit', name: 'Edit Profile', element: AddEditSocialLinks },
 
+  { path: "/users", name: "Users", element: Users },
+  { path: "/user/:userId/edit", name: "Edit", element: EditUser },
+
   { path: "/log", name: "Log", element: Log },
-  { path: "/users", name: "Admins", element: ViewAdmin },
-  { path: "/users/add", name: "Add", element: AddAdmin },
-  { path: "/users/:id/edit", name: "Edit", element: EditAdmin },
+  { path: "/admins", name: "Admins", element: ViewAdmin },
+  { path: "/admin/add", name: "Add", element: AddAdmin },
+  { path: "/admin/:id/edit", name: "Edit", element: EditAdmin },
   { path: "/roles", name: "Role", element: ViewRole },
-  { path: "/roles/add", name: "Add", element: AddRole },
-  { path: "/roles/:id/edit", name: "Edit", element: EditRole },
+  { path: "/role/add", name: "Add", element: AddRole },
+  { path: "/role/:roleId/edit", name: "Edit", element: EditRole },
 ]
 
 export default routes

@@ -7,6 +7,7 @@ import {
   cilBadge,
   cilUserFollow,
   cilSpreadsheet,
+  cilGroup
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -29,7 +30,13 @@ const _nav = [
     to: '/profiles',
     icon: <CIcon icon={cilInstitution} customClassName="nav-icon" />,
   },
-  { component: CNavItem, name: "Admins", to: "/users", icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" /> },
+  {
+    component: CNavItem,
+    name: 'Users',
+    to: '/users',
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+  },
+  { component: CNavItem, name: "Admins", to: "/admins", icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" /> },
   { component: CNavItem, name: "Roles", to: "/roles", icon: <CIcon icon={cilBadge} customClassName="nav-icon" /> },
   {
     component: CNavGroup,

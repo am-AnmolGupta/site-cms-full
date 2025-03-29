@@ -22,7 +22,7 @@ const ViewBrand = () => {
     const getBrand = async () => {
       try {
         const token = getCookie('authToken=');
-        const response = await fetch(`${url}/admin/users`, {
+        const response = await fetch(`${url}/admin/admins`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -49,11 +49,11 @@ const ViewBrand = () => {
     // eslint-disable-next-line
   }, []);
   const handleEdit = (item) => {
-    navigate(`/users/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
+    navigate(`/admin/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
   };
 
   const redirectToBrandAdd = () => {
-    navigate("/users/add");
+    navigate("/admin/add");
   };
 
   const columns = [

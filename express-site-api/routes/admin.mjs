@@ -11,6 +11,7 @@ import { LogController } from '../app/Controllers/Admin/LogController.mjs';
 import { ChannelController } from '../app/Controllers/Admin/ChannelController.mjs';
 import { ModuleController } from '../app/Controllers/Admin/ModuleController.mjs';
 import { ProfileController } from '../app/Controllers/Admin/ProfileController.mjs';
+import { UserController } from '../app/Controllers/Admin/UserController.mjs';
 
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
@@ -33,13 +34,14 @@ adminRouter.use(CheckAuthMiddleware);
 
 adminRouter.post("/refresh/token", AuthController.refreshToken);
 
+adminRouter.get("/users", UserController.users);
 
 
 
 adminRouter.use(AdminRoleMiddleware);
 
-adminRouter.get("/users", AdminController.users);
-adminRouter.post("/add-user", AdminController.addUser);
+adminRouter.get("/admins", AdminController.users);
+adminRouter.post("/add-admin", AdminController.addUser);
 
 adminRouter.post("/add-role", AdminController.addRole);
 adminRouter.get("/roles", AdminController.roleList);
