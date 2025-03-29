@@ -17,6 +17,7 @@ const EditUser = React.lazy(() => import('./views/user/EditUser'))
 const ViewAdmin = React.lazy(() => import("./views/admin/ViewAdmin.js"));
 const AddAdmin = React.lazy(() => import("./views/admin/AddAdmin.js"));
 const EditAdmin = React.lazy(() => import("./views/admin/EditAdmin.js"));
+const AddEditAdmin = React.lazy(() => import("./views/admin/AddEditAdmin.js"));
 
 const ViewRole = React.lazy(() => import("./views/roles/ViewRole"));
 const AddEditRole = React.lazy(() => import("./views/roles/AddEditRole.js"));
@@ -26,7 +27,7 @@ const Log = React.lazy(() => import("./views/pages/log/Log.js"));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  
+
   // Channel routes
   { path: '/channel', name: 'Channel', element: Channel },
   { path: '/channel/add', name: 'Add Channel', element: AddEditChannel },
@@ -34,7 +35,7 @@ const routes = [
   { path: '/channel/:channelId/social-links', name: 'Social Links', element: SocialLinks },
   { path: '/channel/:channelId/social-links/add', name: 'Add Social Links', element: AddEditSocialLinks },
   { path: '/channel/:channelId/social-links/:socialLinkId/edit', name: 'Edit Social Links', element: AddEditSocialLinks },
-  
+
   // Profile routes
   { path: '/profiles', name: 'Profiles', element: Profiles },
   { path: '/profiles/add', name: 'Add Profile', element: AddEditProfile },
@@ -49,12 +50,12 @@ const routes = [
 
   // Log routes
   { path: "/log", name: "Log", element: Log },
-  
+
   // Admin routes
   { path: "/admins", name: "Admins", element: ViewAdmin },
-  { path: "/admin/add", name: "Add", element: AddAdmin },
-  { path: "/admin/:id/edit", name: "Edit", element: EditAdmin },
-  
+  { path: "/admin/add", name: "Add", element: AddEditAdmin },
+  { path: "/admin/:adminId/edit", name: "Edit", element: AddEditAdmin },
+
   // Role routes
   { path: "/roles", name: "Role", element: ViewRole },
   { path: "/role/add", name: "Add", element: AddEditRole },

@@ -80,7 +80,13 @@ export class AdminController {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const roles = await Role.paginate({}, { page, limit });
+            const pagination = req.query.pagination || '';
+            let roles;
+            if (pagination === 'true') {
+                roles = await Role.paginate({}, { page, limit });
+            } else {
+                roles = await Role.find();
+            }
 
             return success(res, "role list", roles, 200);
         } catch (error) {

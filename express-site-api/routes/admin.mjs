@@ -41,7 +41,7 @@ adminRouter.get("/users", UserController.users);
 // adminRouter.use(AdminRoleMiddleware);
 
 adminRouter.get("/admins", AdminController.users);
-adminRouter.post("/add-admin", AdminController.addUser);
+adminRouter.post("/add-edit-admin", AdminController.addUser);
 
 adminRouter.post("/add-edit-role", AdminController.addEditRole);
 adminRouter.get("/roles", AdminController.roleList);

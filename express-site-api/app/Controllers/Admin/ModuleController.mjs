@@ -2,6 +2,7 @@ import { Channel } from "../../Models/Channel.mjs";
 import { success, failed, customFailedMessage } from "../../Helper/response.mjs";
 import { Profile } from "../../Models/Profile.mjs";
 import { Role } from "../../Models/Role.mjs";
+import { Admin } from "../../Models/Admin.mjs";
 export class ModuleController extends Error {
   static async moduleDetail(req, res) {
     try {
@@ -28,6 +29,9 @@ export class ModuleController extends Error {
           break;
         case 'role':
           module = await Role.findById(moduleId);
+          break;
+        case 'admin':
+          module = await Admin.findById(moduleId);
           break;
         default:
           return customFailedMessage(res, "Module type not found", 400);
