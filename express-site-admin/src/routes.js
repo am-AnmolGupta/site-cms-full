@@ -15,8 +15,6 @@ const Users = React.lazy(() => import('./views/user/ViewUsers'))
 const EditUser = React.lazy(() => import('./views/user/EditUser'))
 
 const ViewAdmin = React.lazy(() => import("./views/admin/ViewAdmin.js"));
-const AddAdmin = React.lazy(() => import("./views/admin/AddAdmin.js"));
-const EditAdmin = React.lazy(() => import("./views/admin/EditAdmin.js"));
 const AddEditAdmin = React.lazy(() => import("./views/admin/AddEditAdmin.js"));
 
 const ViewRole = React.lazy(() => import("./views/roles/ViewRole"));

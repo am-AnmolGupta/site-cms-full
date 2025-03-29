@@ -4,7 +4,6 @@ import { Role } from "../../Models/Role.mjs";
 import bcrypt from 'bcryptjs';
 import { success, failed, failedValidation, validationFailedRes } from "../../Helper/response.mjs";
 import mongoose from "mongoose";
-
 export class AdminController {
 
     static async addUser(req, res) {
@@ -80,9 +79,9 @@ export class AdminController {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const pagination = req.query.pagination || '';
+            const pagination = req.query.pagination;
             let roles;
-            if (pagination === 'true') {
+            if (!pagination) {
                 roles = await Role.paginate({}, { page, limit });
             } else {
                 roles = await Role.find();
