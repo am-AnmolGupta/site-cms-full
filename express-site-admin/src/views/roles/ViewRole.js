@@ -70,11 +70,11 @@ const ViewBrand = () => {
     // eslint-disable-next-line
   }, []);
   const handleEdit = (item) => {
-    navigate(`/role/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
+    navigate(`/roles/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
   };
 
   const redirectToBrandAdd = () => {
-    navigate("/role/add");
+    navigate("/roles/add");
   };
 
   const columns = [

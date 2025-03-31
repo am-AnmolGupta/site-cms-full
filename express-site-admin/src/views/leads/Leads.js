@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilPlus } from "@coreui/icons";
-import { getCookie } from '../../Helper/cookieHelper';
-import { ToastContainer } from "react-toastify";
 import {
   CCard,
   CCardBody,
@@ -11,24 +9,49 @@ import {
   CButton
 } from "@coreui/react";
 import DataTable from "../../components/DataTable";
-const ViewBrand = () => {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const ViewLeads = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
-  const [person, setPerson] = useState([]);
-  const navigate = useNavigate(); // Use useNavigate hook for programmatic navigation
+  const navigate = useNavigate();
+
+  // Pagination state
+  const [leads, setLeads] = useState([]);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
 
   const [totalDocs, setTotalDocs] = useState(0);
+
+  const location = useLocation();
+
   useEffect(() => {
-    const getBrand = async () => {
+    if (location.state?.message) {
+      toast.success(location.state.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const getLeads = async () => {
       try {
-        const token = getCookie('authToken=');
-        const response = await fetch(`${url}/admin/admins`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
-          },
-        });
+        const token = "";
+        const response = await fetch(
+          `${url}/admin/leads?page=${paginationModel.page + 1}&limit=${paginationModel.pageSize}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         const json = await response.json();
         if (json.status_code === 403) {
           navigate("/403");
@@ -37,23 +60,20 @@ const ViewBrand = () => {
             ...item,
             id: item._id,
           }));
-          setPerson(formattedData);
+
+          setLeads(formattedData);
           setTotalDocs(json.data.totalDocs);
         }
       } catch (error) {
-        console.error("Error fetching persons:", error);
+        console.error("Error fetching leads:", error);
       }
     };
 
-    getBrand();
-    // eslint-disable-next-line
-  }, []);
-  const handleEdit = (item) => {
-    navigate(`/admins/${item._id}/edit`, { state: { itemData: item } }); // Pass person object
-  };
+    getLeads();
+  }, [paginationModel]);
 
-  const redirectToBrandAdd = () => {
-    navigate("/admins/add");
+  const handleEdit = (item) => {
+    navigate(`/leads/${item._id}/edit`, { state: { itemData: item } });
   };
 
   const columns = [
@@ -73,25 +93,16 @@ const ViewBrand = () => {
       ),
     },
     {
-      field: "name",
+      field: "title",
       headerName: "Name",
       flex: 1,
       minWidth: 120,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "slug",
+      headerName: "Slug",
       flex: 1,
       minWidth: 100,
-    },
-    {
-      field: "roles",
-      headerName: "Roles",
-      flex: 1,
-      minWidth: 100,
-      valueGetter: (params) => {
-        return params.join(', ');
-      }
     },
     {
       field: "createdAt",
@@ -142,25 +153,18 @@ const ViewBrand = () => {
       },
     },
   ];
+
   return (
     <>
       <ToastContainer />
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center">
-          <h3 className="m-0">Admins Dashboard</h3>
-          <CButton
-            color="primary"
-            variant="outline"
-            onClick={redirectToBrandAdd}
-          >
-            <CIcon icon={cilPlus} className="me-2" />
-            Add Admin
-          </CButton>
+          <h3 className="m-0">Leads Dashboard</h3>
         </CCardHeader>
         <CCardBody>
           <div style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
             <DataTable
-              channel={person}
+              channel={leads}
               columns={columns}
               totalDocs={totalDocs}
               paginationModel={paginationModel}
@@ -173,4 +177,4 @@ const ViewBrand = () => {
   );
 };
 
-export default ViewBrand;
+export default ViewLeads;

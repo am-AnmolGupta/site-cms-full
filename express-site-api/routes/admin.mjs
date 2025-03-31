@@ -36,6 +36,7 @@ adminRouter.post("/refresh/token", AuthController.refreshToken);
 
 adminRouter.get("/users", UserController.users);
 
+// adminRouter.get("/leads", LeadsController.leads);
 
 
 // adminRouter.use(AdminRoleMiddleware);

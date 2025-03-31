@@ -70,7 +70,7 @@ const ViewUsers = () => {
     // eslint-disable-next-line
   }, []);
   const handleEdit = (item) => {
-    navigate(`/user/${item._id}/edit`, { state: { itemData: item } }); // Pass users object
+    navigate(`/users/${item._id}/edit`, { state: { itemData: item } }); // Pass users object
   };
 
   const columns = [

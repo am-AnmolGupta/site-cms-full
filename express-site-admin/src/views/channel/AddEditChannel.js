@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { cilCompass, cilShare } from "@coreui/icons";
+import { cilCompass, cilShare, cilAddressBook } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CCard, CCardHeader, CCardBody, CButton, CForm } from "@coreui/react";
 
@@ -167,6 +167,10 @@ const AddEditChannel = () => {
             <CButton color="info" variant="outline" component="a" href={`/channel/${channelId}/social-links`}>
               <CIcon icon={cilShare} className="me-2" />
               Social Links
+            </CButton>
+            <CButton color="secondary" variant="outline" component="a" href={`/channel/${channelId}/leads`}>
+              <CIcon icon={cilAddressBook} className="me-2" />
+              Leads
             </CButton>
           </div>
         )}
