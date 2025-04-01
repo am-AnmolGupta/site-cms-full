@@ -12,6 +12,7 @@ import { ChannelController } from '../app/Controllers/Admin/ChannelController.mj
 import { ModuleController } from '../app/Controllers/Admin/ModuleController.mjs';
 import { ProfileController } from '../app/Controllers/Admin/ProfileController.mjs';
 import { UserController } from '../app/Controllers/Admin/UserController.mjs';
+import { LeadsController } from '../app/Controllers/Admin/LeadController.mjs';
 
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
@@ -36,7 +37,7 @@ adminRouter.post("/refresh/token", AuthController.refreshToken);
 
 adminRouter.get("/users", UserController.users);
 
-// adminRouter.get("/leads", LeadsController.leads);
+adminRouter.get("/leads", LeadsController.leads);
 
 
 // adminRouter.use(AdminRoleMiddleware);

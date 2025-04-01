@@ -8,14 +8,10 @@ export class AdminController {
 
     static async addUser(req, res) {
         try {
-            let isExist = await Admin.findOne({ email: req.body.email });
-            if (isExist && !req.body.hasOwnProperty('userId')) {
-                return success(res, "user already exist!");
-            }
             const valid = new Validator(req.body, {
                 name: 'required',
                 email: 'required|email',
-                roles: 'required|array',
+                roles: 'required',
             });
             const matched = await valid.check()
             if (!matched)
@@ -23,16 +19,16 @@ export class AdminController {
             if (req.body.status) {
                 req.body.deletedAt = (req.body.status == 'inactive') ? new Date() : null;
             }
-            if (!isExist) {
-                const hashedPassword = await bcrypt.hash(req.body.email, 12);
-                req.body.password = hashedPassword;
-            }
-            if (req.body.userId) {
-                const filter = { _id: mongoose.Types.ObjectId(req.body.userId) };
+            const { adminId } = req.body;
+            req.body.roles = JSON.parse(req.body.roles);
+            if (adminId) {
+                const filter = { _id: mongoose.Types.ObjectId(adminId) };
                 await Admin.findOneAndUpdate(filter, req.body);
                 return success(res, "user updated successfully!");
 
             } else {
+                const hashedPassword = await bcrypt.hash(req.body.email, 12);
+                req.body.password = hashedPassword;
                 await Admin.create(req.body);
                 return success(res, "user added successfully!");
             }

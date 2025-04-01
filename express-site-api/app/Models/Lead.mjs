@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const LeadSchema = new mongoose.Schema({
+  channelId: { type: mongoose.Schema.Types.ObjectId, ref: 'channels', required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   mobile: { type: String, required: true },

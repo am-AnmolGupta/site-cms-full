@@ -102,6 +102,10 @@ const AddEditAdmin = () => {
             } else {
               formData.append(key, "");
             }
+          } else if (key === 'roles') {
+            const updatedRoles = inputFields.roles.map((type) => type.label);
+            console.log(updatedRoles);
+            formData.append(key, JSON.stringify(updatedRoles));
           } else {
             formData.append(key, value ?? "");
           }

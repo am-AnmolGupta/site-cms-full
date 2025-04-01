@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import { cilPlus } from "@coreui/icons";
 import {
@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ViewLeads = () => {
   const url = import.meta.env.VITE_USERS_API_URL;
   const navigate = useNavigate();
+  const { channelId } = useParams();
 
   // Pagination state
   const [leads, setLeads] = useState([]);
@@ -42,7 +43,7 @@ const ViewLeads = () => {
       try {
         const token = "";
         const response = await fetch(
-          `${url}/admin/leads?page=${paginationModel.page + 1}&limit=${paginationModel.pageSize}`,
+          `${url}/admin/leads?channelId=${channelId}&page=${paginationModel.page + 1}&limit=${paginationModel.pageSize}`,
           {
             method: "GET",
             headers: {
@@ -93,21 +94,44 @@ const ViewLeads = () => {
       ),
     },
     {
-      field: "title",
+      field: "name",
       headerName: "Name",
       flex: 1,
-      minWidth: 120,
+      minWidth: 80,
+      renderCell: (params) => {
+        const firstName = params.row?.firstName || "";
+        const lastName = params.row?.lastName || "";
+        return `${firstName} ${lastName}`.trim();
+      },
     },
     {
-      field: "slug",
-      headerName: "Slug",
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "mobile",
+      headerName: "Mobile",
       flex: 1,
       minWidth: 100,
     },
     {
+      field: "campaignName",
+      headerName: "Campaign Name",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "message",
+      headerName: "Message",
+      flex: 1,
+      minWidth: 250,
+    },
+    {
       field: "createdAt",
       headerName: "Created At",
-      width: 150,
+      width: 100,
       valueGetter: (params) => {
         try {
           const date = new Date(params);
@@ -115,40 +139,6 @@ const ViewLeads = () => {
         } catch (error) {
           console.error("Date parsing error:", error);
           return "N/A";
-        }
-      },
-    },
-    {
-      field: "updatedAt",
-      headerName: "Updated At",
-      width: 150,
-      valueGetter: (params) => {
-        try {
-          const date = new Date(params);
-          return date.toLocaleDateString("en-GB");
-        } catch (error) {
-          console.error("Date parsing error:", error);
-          return "N/A";
-        }
-      },
-    },
-    {
-      field: "deletedAt",
-      headerName: "Deleted At",
-      width: 150,
-      valueGetter: (params) => {
-        if (params == null || params === '') {
-          return '';  // Return empty string for null or empty values
-        }
-
-        try {
-          const date = new Date(params);
-          return !isNaN(date.getTime())
-            ? date.toLocaleDateString("en-GB")
-            : '';
-        } catch (error) {
-          console.error("Date parsing error:", error);
-          return '';
         }
       },
     },
