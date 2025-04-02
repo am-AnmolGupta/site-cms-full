@@ -36,6 +36,7 @@ adminRouter.post("/edit-profile-social-link", ProfileController.editSocialLinks)
 adminRouter.post("/refresh/token", AuthController.refreshToken);
 
 adminRouter.get("/users", UserController.users);
+adminRouter.post("/add-edit-user", UserController.addEditUser);
 
 adminRouter.get("/leads", LeadsController.leads);
 
