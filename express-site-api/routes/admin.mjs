@@ -42,6 +42,7 @@ adminRouter.post("/add-edit-user", UserController.addEditUser);
 adminRouter.get("/leads", LeadsController.leads);
 
 adminRouter.get("/static-pages", StaticPageController.staticPages);
+adminRouter.post("/add-edit-static-page", StaticPageController.addEditStaticPage);
 
 // adminRouter.use(AdminRoleMiddleware);
 

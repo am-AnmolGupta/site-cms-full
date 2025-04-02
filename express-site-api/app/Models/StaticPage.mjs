@@ -14,6 +14,7 @@ const StaticPageSchema = new mongoose.Schema(
     seoDescription: { type: String, required: false },
     seoImage: { type: String, required: false },
     seoKeywords: { type: String, required: false },
+    deletedAt: { type: Date, default: null }
   },
   { timestamps: true }
 );

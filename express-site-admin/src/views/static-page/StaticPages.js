@@ -171,7 +171,7 @@ const StaticPages = () => {
             onClick={redirectToBrandAdd}
           >
             <CIcon icon={cilPlus} className="me-2" />
-            Add Channel
+            Add Page
           </CButton>
         </CCardHeader>
         <CCardBody>
