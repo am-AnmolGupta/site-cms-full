@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { cilCompass, cilShare, cilAddressBook } from "@coreui/icons";
+import { cilCompass, cilShare, cilAddressBook, cilMenu, cilNotes } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CCard, CCardHeader, CCardBody, CButton, CForm } from "@coreui/react";
+import { CCard, CCardHeader, CCardBody, CButton, CForm, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from "@coreui/react";
 
 const AddEditChannel = () => {
   const { channelId } = useParams();
@@ -160,6 +160,7 @@ const AddEditChannel = () => {
         <h4 className="m-0">{isEdit ? "Edit Channel" : "Add Channel"}</h4>
         {isEdit && (
           <div className="ms-auto d-flex gap-2">
+            {/* First two buttons */}
             <CButton color="success" variant="outline" component="a" href={`/channel/${channelId}/navigation`}>
               <CIcon icon={cilCompass} className="me-2" />
               Navigation
@@ -168,10 +169,23 @@ const AddEditChannel = () => {
               <CIcon icon={cilShare} className="me-2" />
               Social Links
             </CButton>
-            <CButton color="secondary" variant="outline" component="a" href={`/channel/${channelId}/leads`}>
-              <CIcon icon={cilAddressBook} className="me-2" />
-              Leads
-            </CButton>
+
+            {/* Dropdown for remaining buttons */}
+            <CDropdown>
+              <CDropdownToggle color="secondary" variant="outline">
+                <CIcon icon={cilMenu} />
+              </CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem href={`/channel/${channelId}/leads`}>
+                  <CIcon icon={cilAddressBook} className="me-2" />
+                  Leads
+                </CDropdownItem>
+                <CDropdownItem href={`/channel/${channelId}/static-pages`}>
+                  <CIcon icon={cilNotes} className="me-2" />
+                  Static Pages
+                </CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
           </div>
         )}
       </CCardHeader>

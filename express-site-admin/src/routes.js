@@ -25,6 +25,8 @@ const Log = React.lazy(() => import("./views/pages/log/Log.js"));
 const Leads = React.lazy(() => import("./views/leads/Leads.js"));
 const EditLead = React.lazy(() => import("./views/leads/EditLead.js"));
 
+const StaticPages = React.lazy(() => import("./views/static-page/StaticPages.js"));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -36,6 +38,7 @@ const routes = [
   { path: '/channel/:channelId/social-links', name: 'Social Links', element: SocialLinks },
   { path: '/channel/:channelId/social-links/add', name: 'Add Social Link', element: AddEditSocialLinks },
   { path: '/channel/:channelId/social-links/:socialLinkId/edit', name: 'Edit Social Link', element: AddEditSocialLinks },
+  { path: '/channel/:channelId/static-pages', name: 'Static Pages', element: StaticPages },
 
 
   // Leads routes
