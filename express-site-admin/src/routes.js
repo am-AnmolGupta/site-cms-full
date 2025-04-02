@@ -23,6 +23,7 @@ const AddEditRole = React.lazy(() => import("./views/roles/AddEditRole.js"));
 const Log = React.lazy(() => import("./views/pages/log/Log.js"));
 
 const Leads = React.lazy(() => import("./views/leads/Leads.js"));
+const EditLead = React.lazy(() => import("./views/leads/EditLead.js"));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -36,9 +37,10 @@ const routes = [
   { path: '/channel/:channelId/social-links/add', name: 'Add Social Link', element: AddEditSocialLinks },
   { path: '/channel/:channelId/social-links/:socialLinkId/edit', name: 'Edit Social Link', element: AddEditSocialLinks },
 
-  
+
   // Leads routes
   { path: "/channel/:channelId/leads", name: "Leads", element: Leads },
+  { path: "/channel/:channelId/leads/:leadId/edit", name: "View Lead", element: EditLead },
 
   // Profile routes
   { path: '/profiles', name: 'Profiles', element: Profiles },

@@ -4,6 +4,7 @@ import { Profile } from "../../Models/Profile.mjs";
 import { Role } from "../../Models/Role.mjs";
 import { Admin } from "../../Models/Admin.mjs";
 import { User } from "../../Models/User.mjs";
+import { Lead } from "../../Models/Lead.mjs";
 export class ModuleController extends Error {
   static async moduleDetail(req, res) {
     try {
@@ -36,6 +37,9 @@ export class ModuleController extends Error {
           break;
         case 'user':
           module = await User.findById(moduleId);
+          break;
+        case 'lead':
+          module = await Lead.findById(moduleId);
           break;
         default:
           return customFailedMessage(res, "Module type not found", 400);

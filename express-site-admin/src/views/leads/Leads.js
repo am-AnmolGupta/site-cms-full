@@ -74,7 +74,7 @@ const ViewLeads = () => {
   }, [paginationModel]);
 
   const handleEdit = (item) => {
-    navigate(`/leads/${item._id}/edit`, { state: { itemData: item } });
+    navigate(`/channel/${channelId}/leads/${item._id}/edit`, { state: { itemData: item } });
   };
 
   const columns = [
@@ -89,7 +89,7 @@ const ViewLeads = () => {
           size="sm"
           onClick={() => handleEdit(params.row)}
         >
-          Edit
+          View
         </CButton>
       ),
     },
