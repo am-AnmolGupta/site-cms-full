@@ -6,10 +6,11 @@ import { Admin } from "../../Models/Admin.mjs";
 import { User } from "../../Models/User.mjs";
 import { Lead } from "../../Models/Lead.mjs";
 import { StaticPage } from "../../Models/StaticPage.mjs";
+import { Navigation } from '../../Models/Navigation.mjs';
 export class ModuleController extends Error {
   static async moduleDetail(req, res) {
     try {
-      const { moduleType, moduleId, socialLinkId } = req.body;
+      const { moduleType, moduleId, socialLinkId, channelId } = req.body;
       let module;
 
       switch (moduleType) {
@@ -45,6 +46,9 @@ export class ModuleController extends Error {
         case 'static-page':
           module = await StaticPage.findById(moduleId);
           break;
+        case 'navigation':
+          module = await Navigation.find({ level: moduleId, channelId: channelId });
+          break;
         default:
           return customFailedMessage(res, "Module type not found", 400);
       }
@@ -53,7 +57,7 @@ export class ModuleController extends Error {
         return customFailedMessage(res, "Module not found", 404);
       }
 
-      const moduleData = module.toObject({ virtuals: true });
+      const moduleData = module;
 
       return success(res, "Module details", moduleData, 200);
     } catch (error) {

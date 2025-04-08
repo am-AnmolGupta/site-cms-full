@@ -1,4 +1,5 @@
 import React from 'react'
+import ViewNavigation from './views/navigation/ViewNavigation.js'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
@@ -28,6 +29,10 @@ const EditLead = React.lazy(() => import("./views/leads/EditLead.js"));
 const StaticPages = React.lazy(() => import("./views/static-page/StaticPages.js"));
 const AddEditStaticPage = React.lazy(() => import("./views/static-page/AddEditStaticPage.js"));
 
+const Navigation = React.lazy(() => import("./views/navigation/ViewNavigation.js"));
+const AddNavigation = React.lazy(() => import("./views/navigation/AddNavigation.js"));
+const ViewNavigationChart = React.lazy(() => import("./views/navigation/ViewNavigationChart.js"));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -42,6 +47,10 @@ const routes = [
   { path: '/channel/:channelId/static-pages', name: 'Static Pages', element: StaticPages },
   { path: '/channel/:channelId/static-pages/add', name: 'Static Pages', element: AddEditStaticPage },
   { path: '/channel/:channelId/static-pages/:staticPageId/edit', name: 'Edit Static Page', element: AddEditStaticPage },
+  { path: '/channel/:channelId/navigation', name: 'Navigation', element: Navigation },
+  { path: '/channel/:channelId/navigation/add', name: 'Add Navigation', element: AddNavigation },
+  { path: '/channel/:channelId/navigation/:navigationId/edit', name: 'Edit Navigation', element: AddNavigation },
+  { path: '/channel/:channelId/navigation/:navigationId/view', name: 'View Navigation', element: ViewNavigationChart },
 
 
   // Leads routes

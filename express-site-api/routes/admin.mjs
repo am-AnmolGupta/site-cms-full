@@ -14,6 +14,7 @@ import { ProfileController } from '../app/Controllers/Admin/ProfileController.mj
 import { UserController } from '../app/Controllers/Admin/UserController.mjs';
 import { LeadsController } from '../app/Controllers/Admin/LeadController.mjs';
 import { StaticPageController } from '../app/Controllers/Admin/StaticPageController.mjs';
+import { NavigationController } from '../app/Controllers/Admin/NavigationController.mjs';
 
 adminRouter.post("/login", AuthController.login);
 adminRouter.post("/forgot/password/", AuthController.forgotPassword);
@@ -44,6 +45,8 @@ adminRouter.get("/leads", LeadsController.leads);
 adminRouter.get("/static-pages", StaticPageController.staticPages);
 adminRouter.post("/add-edit-static-page", StaticPageController.addEditStaticPage);
 
+adminRouter.get("/navigation", NavigationController.navigation);
+adminRouter.post("/add-navigation", NavigationController.addNavigation);
 // adminRouter.use(AdminRoleMiddleware);
 
 adminRouter.get("/admins", AdminController.users);
